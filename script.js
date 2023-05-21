@@ -1,3 +1,4 @@
+//codigo original. el cambiado esta en el HTML
 init();
 
 function init(){
