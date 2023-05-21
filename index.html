@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+
+
+<audio id="audio" preload="auto" tabindex="0" controls="" >
+  <source src="http://localhost/reproductormusica/01-audioslave-revelations395.mp3">
+</audio>
+
+
+<ul class="playlist">
+        <li class="active">
+           <a href="http://localhost/reproductormusica/01-audioslave-revelations395.mp3">
+             Revelations
+           </a>
+        </li>
+        <li>
+            <a href="http://localhost/reproductormusica/Audioslave-DoesntRemindMe.mp3">
+                Doesnt Remind
+            </a>
+        </li>
+        <li>
+            <a href="http://localhost/reproductormusica/audioslave-gasoline.mp3">
+                Gasoline
+            </a>
+        </li>
+        <li>
+            <a href="http://localhost/reproductormusica/audioslave-iamthehighway.mp3">
+                Iam the highway
+            </a>
+        </li>
+        <li>
+            <a href="http://localhost/reproductormusica/audioslavecochise372.mp3">
+                Chochise
+            </a>
+        </li>
+    </ul>
+    
+</body>
+
+<script>
+init();
+var urlsong;
+function init(){
+    
+    var audio = document.getElementById('audio');
+    var playlist = document.getElementsByClassName('playlist');
+    var tracks = playlist[0].getElementsByTagName('a');
+    audio.volume = 0.10;
+    
+    
+    var playPromise = audio.play();
+ 
+  if (playPromise !== undefined) {
+    playPromise.then(_ => {
+      // Automatic playback started!
+      // Show playing UI.
+      // We can now safely pause video...
+      video.pause();
+    })
+    .catch(error => {
+      // Auto-play was prevented
+      // Show paused UI.
+    });
+  }
+    
+    
+    //Agregamos los eventos a los links que nos permitirán cambiar de canción
+    for(var track in tracks) {
+      var link = tracks[track];
+      if(typeof link === "function" || typeof link === "number") continue;
+      link.addEventListener('click', function(e) {
+      	e.preventDefault();
+        var song = this.getAttribute('href');
+       	run(song, audio, this);
+      });
+    }
+    //agregamos evento para reproducir la siguiente canción en la lista
+    //si la canción es la ultima reproducir la primera otra vez
+    audio.addEventListener('ended',function(e) {
+        for(var track in tracks) {
+          var link = tracks[track];
+          var nextTrack = parseInt(track) + 1;
+          //console.log(parseInt(track));
+          if(typeof link === "function" || typeof link === "number") continue;
+          if(!this.src) this.src = tracks[0];
+          if(track == (tracks.length - 1)) nextTrack = 0;
+                                	console.log(nextTrack);
+        	if(link.getAttribute('href') === this.src) {
+          	var nextLink = tracks[nextTrack];
+          	run(nextLink.getAttribute('href'), audio, nextLink);
+            break;
+          }
+        }
+    });
+}
+
+function run(song, audio, link){
+        var parent = link.parentElement;
+        //quitar el active de todos los elementos de la lista
+        var items = parent.parentElement.getElementsByTagName('li');
+        for(var item in items) {
+          if(items[item].classList)
+            items[item].classList.remove("active");
+        }
+        
+        //agregar active a este elemento
+        parent.classList.add("active");
+        
+        //tocar la cancion
+        audio.src = song;
+        urlsong = song;
+        audio.load();
+        setTimeout(function(){
+        	audio.play();
+        	}, 0);
+        //audio.play();
+}
+
+
+
+</script>
+
+
+</html>
