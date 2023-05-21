@@ -53,20 +53,9 @@ function init(){
     audio.volume = 0.10;
     
     
-    var playPromise = audio.play();
- 
-  if (playPromise !== undefined) {
-    playPromise.then(_ => {
-      // Automatic playback started!
-      // Show playing UI.
-      // We can now safely pause video...
-      video.pause();
-    })
-    .catch(error => {
-      // Auto-play was prevented
-      // Show paused UI.
-    });
-  }
+        setTimeout(function(){
+        	audio.play();
+        	}, 0);
     
     
     //Agregamos los eventos a los links que nos permitirán cambiar de canción
